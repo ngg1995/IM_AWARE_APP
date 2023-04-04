@@ -122,7 +122,7 @@ function submitForm() {
   
   const layers_div = document.getElementById("layers");
   
-  fetch("http://13.42.66.43:5000/sim", {
+  fetch("http://localhost:5000/sim", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
