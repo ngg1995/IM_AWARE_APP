@@ -1,0 +1,25 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Upload and Display File Text</title>
+  </head>
+  <body>
+    <h1>Upload and Display File Text</h1>
+    <input type="file" id="fileInput">
+    <button onclick="displayFileText()">Upload</button>
+    <br>
+    <p id="fileText"></p>
+    <script>
+      function displayFileText() {
+        const fileInput = document.getElementById("fileInput");
+        const fileText = document.getElementById("fileText");
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          fileText.innerText = event.target.result;
+        };
+        reader.readAsText(file);
+      }
+    </script>
+  </body>
+</html>

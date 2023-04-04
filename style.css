@@ -1,0 +1,111 @@
+@import "node_modules/ol/ol.css";
+
+.banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: left;
+  background-color: #f2f2f2;
+  padding: 10px;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+.banner h1 {
+  margin: 0;
+  text-justify: center;
+}
+.banner button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+body {
+  font-family: 'Fira Code', monospace;
+}
+
+#left-panel {
+  float: left;
+  width: 25%;
+  height: 100%;
+  text-align: center;
+}
+#right-panel {
+  float: right;
+  width: 75%;
+  height: 100%;
+}
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 20%;
+  padding: 20px;
+  background-color: #eeeeee;
+}
+
+html, body {
+  margin: 0;
+  height: 100%;
+}
+#map {
+  position: fixed;
+  left: 25%;
+  top: 0; 
+  bottom: 0;
+  width: 75%;
+}
+
+/* Style the dropdown button */
+.dropbtn {
+  background-color: #ccc;
+  color: black;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Style the dropdown content */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Style the options inside the dropdown */
+.dropdown-content button {
+  color: black;
+  padding: 10px 20px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Style the options inside the dropdown on hover */
+.dropdown-content button:hover {
+  background-color: #ddd;
+}
+
+/* Style the active option */
+.dropdown-content button.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+/* Show the dropdown content when the dropdown button is clicked */
+.show {
+  display: block;
+}
+
+.layer-div{
+  visibility: hidden;
+}
+
+

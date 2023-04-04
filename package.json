@@ -1,0 +1,21 @@
+{
+  "name": "my-app",
+  "version": "1.0.0",
+  "description": "Hello World!",
+  "main": "electron-entry.js",
+  "scripts": {
+    "electron": "electron .",
+    "start": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^4.0.4"
+  },
+  "dependencies": {
+    "bootstrap": "^5.2.3",
+    "electron": "^23.1.4",
+    "electron-vite": "^1.0.20",
+    "ol": "latest"
+  }
+}
