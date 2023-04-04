@@ -16,6 +16,7 @@
     "bootstrap": "^5.2.3",
     "electron": "^23.1.4",
     "electron-vite": "^1.0.21",
-    "ol": "latest"
+    "ol": "latest",
+    "serve": "^14.2.0"
   }
 }
