@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "bootstrap": "^5.2.3",
-    "electron": "^23.1.4",
+    "electron": "^24.0.0",
     "electron-vite": "^1.0.21",
     "ol": "latest",
     "ol-layerswitcher": "^4.1.1",
