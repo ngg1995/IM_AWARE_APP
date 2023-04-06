@@ -5,11 +5,16 @@ import OSM from 'ol/source/OSM';
 import Stamen from 'ol/source/Stamen';
 import ImageLayer from 'ol/layer/Image';
 import Static from 'ol/source/ImageStatic';
-import {toLonLat, transform} from 'ol/proj'
+import {toLonLat, transform} from 'ol/proj';
+import LayerGroup from 'ol/layer/Group';
+import LayerSwitcher from 'ol-layerswitcher';
+import XYZ from 'ol/source/XYZ';
 
+//## Backend URL
 // const FLASK_URL = "http://13.42.66.43:5000/sim"
 const FLASK_URL = "http://localhost:5000/sim"
 
+//## HTML elements
 const fileInput = document.getElementById('file-input');
 const save_button = document.getElementById("save");
 const load_button = document.getElementById("load");
@@ -38,24 +43,53 @@ var maxLon = 0;
 var minLat = 0;
 var maxLat = 0;
 
-const map = new Map({
+//## Map elements
+var map = new Map({
   target: 'map',
   layers: [
-    new TileLayer({
-      source: new OSM()
+    new LayerGroup({
+      // A layer must have a title to appear in the layerswitcher
+      title: 'Base maps',
+      layers: [
+        new TileLayer({
+          // A layer must have a title to appear in the layerswitcher
+          title: 'Terrain',
+          // Again set this layer as a base layer
+          type: 'base',
+          visible: false,
+          source: new Stamen({
+            layer: 'terrain'
+          })
+        }),
+        new TileLayer({
+          // A layer must have a title to appear in the layerswitcher
+          title: 'OSM',
+          // Again set this layer as a base layer
+          type: 'base',
+          visible: true,
+          source: new OSM()
+        }),
+        new TileLayer({
+          title: "Satellite",
+          type: 'base',
+          source: new XYZ({
+            url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+            maxZoom: 19
+          })
+        })
+      ]
     }),
-    new TileLayer({
-      source: new Stamen({
-        layer: 'terrain'
-      })
-    })
   ],
   view: new View({
-    projection: 'EPSG:3857',
-    center: transform([-44.119589277222296, -20.133112801], 'EPSG:4326','EPSG:3857'),
-    zoom: 5
+    center: transform([-44.119589277222296, -20.133112801], 'EPSG:4326', 'EPSG:3857'),
+    zoom: 4.5
   })
 });
+
+var layerSwitcher = new LayerSwitcher({
+  groupSelectStyle: 'children' // Can be 'children' [default], 'group' or 'none'
+});
+map.addControl(layerSwitcher);
 
 map.on('dblclick', function(evt){
   
@@ -87,6 +121,7 @@ lat_input.addEventListener("change", event => {
   setMapViewToCoords(lon_input.value, lat_input.value)
 })
 
+//## 
 function addLayerToMap(minLon, maxLon, minLat, maxLat, mask,layername) {
   const imageUrl = mask;
   const imageExtent = getExtent(minLon, maxLon, minLat, maxLat)
