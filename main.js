@@ -11,7 +11,7 @@ import LayerSwitcher from 'ol-layerswitcher';
 import XYZ from 'ol/source/XYZ';
 
 //## Backend URL
-const FLASK_URL = "http://13.42.66.43:5000/sim"
+const FLASK_URL = "http://18.134.191.205:5000/sim"
 // const FLASK_URL = "http://localhost:5000/sim"
 
 //## HTML elements
@@ -58,7 +58,8 @@ var map = new Map({
           type: 'base',
           visible: false,
           source: new Stamen({
-            layer: 'terrain'
+            layer: 'terrain',
+            maxZoom: 19
           })
         }),
         new TileLayer({
@@ -230,8 +231,8 @@ function submitForm() {
       addLayerToMap(minLon, maxLon, minLat, maxLat, "data:image/png;base64," + result.depth,"depth");
       
       layers_div.style.visibility="visible";
-      radio_inundation.checked = true;
-      selectLayer('inundation');
+      radio_speed.checked = true;
+      selectLayer('speed');
       
     }
     sim_btn.innerHTML = 'Simulate'
