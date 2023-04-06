@@ -11,8 +11,8 @@ import LayerSwitcher from 'ol-layerswitcher';
 import XYZ from 'ol/source/XYZ';
 
 //## Backend URL
-// const FLASK_URL = "http://13.42.66.43:5000/sim"
-const FLASK_URL = "http://localhost:5000/sim"
+const FLASK_URL = "http://13.42.66.43:5000/sim"
+// const FLASK_URL = "http://localhost:5000/sim"
 
 //## HTML elements
 const fileInput = document.getElementById('file-input');
