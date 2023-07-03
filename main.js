@@ -11,8 +11,8 @@ import LayerSwitcher from 'ol-layerswitcher';
 import XYZ from 'ol/source/XYZ';
 
 //## Backend URL
-const FLASK_URL = "http://18.134.191.205:5000/sim"
-// const FLASK_URL = "http://localhost:5000/sim"
+// const FLASK_URL = "http://18.134.191.205:5000/sim"
+const FLASK_URL = "http://localhost:5000/sim"
 
 //## HTML elements
 const fileInput = document.getElementById('file-input');
@@ -106,6 +106,7 @@ function getExtent(minX, maxX, minY, maxY) {
     transform([minX, minY], 'EPSG:4326', 'EPSG:3857'),
     transform([maxX, maxY], 'EPSG:4326', 'EPSG:3857')
   ];
+  console.log(extent)
   return [extent[0][0], extent[0][1], extent[1][0], extent[1][1]];
 }
 
