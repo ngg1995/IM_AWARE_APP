@@ -30,6 +30,16 @@ aboutPanelBtn.addEventListener('click', () => {
 });
 aboutPanelClose.addEventListener('click',() => aboutPanel.style.top = "100%")
 
+const baseBtn = document.getElementById('base-btn')
+const baseSelector = document.getElementById('base-selector')
+baseBtn.addEventListener('mouseover', () => {baseSelector.style.display = 'block'})
+baseBtn.addEventListener('mouseout', () => {baseSelector.style.display = 'none'})
+
+const resultBtn = document.getElementById('result-btn')
+const resultSelector = document.getElementById('result-selector')
+resultBtn.addEventListener('mouseover', () => {resultSelector.style.display = 'block'})
+resultBtn.addEventListener('mouseout', () => {resultSelector.style.display = 'none'})
+
 // ## Backend URL
 const FLASK_URL = "http://18.134.191.205:5000/sim"
 // const FLASK_URL = "http://localhost:5000/sim"
@@ -40,7 +50,6 @@ const save_button = document.getElementById("save");
 const load_button = document.getElementById("load");
 const simForm = document.getElementById("simForm");
 const sim_btn = document.getElementById("sim-button");
-const form = document.getElementById("simForm");
 const radio_speed = document.getElementById("radio-speed");
 const radio_alt = document.getElementById("radio-alt");
 const radio_energy = document.getElementById("radio-energy");
@@ -57,6 +66,9 @@ const tailingsDensity_input = document.getElementById("tailingsDensity-input");
 const maxTime_input = document.getElementById("maxTime-input");
 const timeStep_input = document.getElementById("timeStep-input");
 
+const radio_sat = document.getElementById('radio-sat');
+const radio_terrain = document.getElementById('radio-terrain');
+const radio_OSM = document.getElementById('radio-OSM');
 
 
 
@@ -70,38 +82,32 @@ var maxLat = 0;
 var map = new Map({
   target: 'map',
   layers: [
-    new LayerGroup({
-      // A layer must have a title to appear in the layerswitcher
-      title: 'Base maps',
-      layers: [
-        new TileLayer({
-          // A layer must have a title to appear in the layerswitcher
-          title: 'Terrain',
-          // Again set this layer as a base layer
-          type: 'base',
-          visible: false,
-          source: new Stamen({
-            layer: 'terrain',
-            maxZoom: 19
-          })
-        }),
-        new TileLayer({
-          // A layer must have a title to appear in the layerswitcher
-          title: 'OSM',
-          // Again set this layer as a base layer
-          type: 'base',
-          visible: true,
-          source: new OSM()
-        }),
-        new TileLayer({
-          title: "Satellite",
-          type: 'base',
-          source: new XYZ({
-            url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-            maxZoom: 19
-          })
+      new TileLayer({
+        // A layer must have a title to appear in the layerswitcher
+        title: 'Terrain',
+        // Again set this layer as a base layer
+        type: 'base',
+        visible: false,
+        source: new Stamen({
+          layer: 'terrain',
+          maxZoom: 19
         })
-      ]
+      }),
+      new TileLayer({
+        // A layer must have a title to appear in the layerswitcher
+        title: 'OSM',
+        // Again set this layer as a base layer
+        type: 'base',
+        visible: true,
+        source: new OSM()
+      }),
+      new TileLayer({
+        title: "Satellite",
+        type: 'base',
+        source: new XYZ({
+          url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+          maxZoom: 19
+        })
     }),
   ],
   view: new View({
@@ -109,11 +115,6 @@ var map = new Map({
     zoom: 4.5
   })
 });
-
-var layerSwitcher = new LayerSwitcher({
-  groupSelectStyle: 'children' // Can be 'children' [default], 'group' or 'none'
-});
-map.addControl(layerSwitcher);
 
 map.on('dblclick', function(evt){
   
@@ -170,41 +171,69 @@ function addLayerToMap(minLon, maxLon, minLat, maxLat, mask,layername) {
   document.body.appendChild(img);
 };
 
-function highlightClicked(button) {
-  // set all to be off
-  radio_speed.type = "btn btn-secondary";
-  radio_alt.type = "btn btn-secondary";
-  radio_energy.type = "btn btn-secondary";
-  radio_inundation.type = "btn btn-secondary";
-  radio_density.type = "btn btn-secondary";
-  radio_depth.type = "btn btn-secondary";
-
-  // set the selected one to on
-  button.type = "btn btn-primary";
+//## Select base layer
+function selectBaseLayer(id) {
+  var layers = map.getLayers().getArray();
+  for (var i = layers.length - 1; i >= 0; --i) {
+    if (layers[i] instanceof TileLayer) {
+      if (layers[i].getProperties().title === id) {
+        layers[i].setVisible(true);
+      } else{
+        layers[i].setVisible(false);
+      }
+      // console.log(layers[i].getProperties().name)
+    }
+  }   
 }
 
+radio_OSM.addEventListener("click", event =>{
+  selectBaseLayer('OSM');
+});
+radio_terrain.addEventListener("click", event =>{
+  selectBaseLayer('Terrain');
+});
+radio_sat.addEventListener("click", event =>{
+  selectBaseLayer('Satellite');
+});
+
+
+
+//## Select results layer
+function selectSimLayer(id) {
+  var layers = map.getLayers().getArray();
+  for (var i = layers.length - 1; i >= 0; --i) {
+    if (layers[i] instanceof ImageLayer) {
+      if (layers[i].getProperties().name === id) {
+        layers[i].setVisible(true);
+      } else{
+        layers[i].setVisible(false);
+      }
+      // console.log(layers[i].getProperties().name)
+    }
+  }   
+}
 
 radio_speed.addEventListener("click", event =>{
-  selectLayer('speed');
+  selectSimLayer('speed');
 });
 radio_alt.addEventListener("click", event =>{
-  selectLayer('alt');
+  selectSimLayer('alt');
 });
 radio_energy.addEventListener("click", event =>{
-  selectLayer('energy');
+  selectSimLayer('energy');
 });
 radio_inundation.addEventListener("click", event =>{
-  selectLayer('inundation');
+  selectSimLayer('inundation');
 });
 radio_density.addEventListener("click", event =>{
-  selectLayer('density');
+  selectSimLayer('density');
 });
 radio_depth.addEventListener("click", event =>{
-  selectLayer('depth');
+  selectSimLayer('depth');
 });
 
 
-function submitForm() {
+function runSimulation() {
   
   sim_btn.innerHTML = '<span class="spinner-grow spinner-grow-sm" id="sim-spin"></span>  Simulating';
   sim_btn.disabled = true;
@@ -254,9 +283,9 @@ function submitForm() {
       addLayerToMap(minLon, maxLon, minLat, maxLat, "data:image/png;base64," + result.density,"density");
       addLayerToMap(minLon, maxLon, minLat, maxLat, "data:image/png;base64," + result.depth,"depth");
       
-      layers_div.style.visibility="visible";
+      resultBtn.style.visibility="visible";
       radio_speed.checked = true;
-      selectLayer('speed');
+      selectSimLayer('speed');
       
     }
     sim_btn.innerHTML = 'Simulate'
@@ -264,8 +293,9 @@ function submitForm() {
     save_button.disabled = false;
     })
     .catch(error => {
-      console.error(error);
-      alert("Simulation failed to run")
+      // console.error(error);
+      // alert("Simulation failed to run")
+      alert(error)
 
       sim_btn.innerHTML = 'Simulate'
       sim_btn.disabled = false;
@@ -279,23 +309,8 @@ function submitForm() {
 
 simForm.addEventListener("submit", event => {
   event.preventDefault();
-  submitForm();
+  runSimulation();
 });
-
-function selectLayer(id) {
-  var layers = map.getLayers().getArray();
-  for (var i = layers.length - 1; i >= 0; --i) {
-    if (layers[i] instanceof ImageLayer) {
-      if (layers[i].getProperties().name === id) {
-        layers[i].setVisible(true);
-      } else{
-        layers[i].setVisible(false);
-      }
-      // console.log(layers[i].getProperties().name)
-    }
-  }   
-}
-
 
 save_button.addEventListener("click", event => {
   event.preventDefault();
@@ -369,9 +384,9 @@ fileInput.addEventListener('change', function() {
     addLayerToMap(minLon, maxLon, minLat, maxLat, json.density,"density");
     addLayerToMap(minLon, maxLon, minLat, maxLat, json.depth,"depth");
 
-    layers_div.style.visibility="visible";
+    resultBtn.style.visibility="visible";
     radio_inundation.checked = true;
-    selectLayer('inundation');
+    selectSimLayer('inundation');
 
   };
 

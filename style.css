@@ -59,6 +59,7 @@ body {
   top: 10%; 
   bottom: 0;
   width: 100%;
+  z-index: 0;
 }
 
 .layer-div{
@@ -94,11 +95,11 @@ body {
 
 
 /* Style the navigation bar */
-  .navbar {
-    position: fixed;
-    width: 100%;
-    background-color: #333;
-    overflow: hidden;
+.navbar {
+  position: fixed;
+  width: 100%;
+  background-color: #333;
+  overflow: hidden;
 }
 
 /* Style the buttons inside the navigation bar */
@@ -118,8 +119,28 @@ body {
     color: black;
 }
 
-.simForm {
-  align-items: center;
-  width: 80%;
-  margin: auto;
+.layer-btn-container{
+  position: fixed;
+  top: 10%;
+  right: 5%;
+  margin-right: 0px;
+  margin-left: auto;
+  width: 15ex;
+}
+
+.layer-button {
+  width: 20ex;
+  position: relative;
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  z-index: inherit;
+  border-radius: 20px;
+}
+.layer-radio {
+  text-align: left;
+  display: none;
+  margin-top: 10px;
 }

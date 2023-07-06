@@ -117,22 +117,42 @@
     </div>
     
     <div id="layer-panel">
-      <div id="layers" class="layer-div">
-        <input type="radio" name="layerForm" id="radio-speed" value="Speed">
-        <label for="radio-speed">Speed</label><br />
-        <input type="radio" name="layerForm" id="radio-alt" value="Alt">
-        <label for="radio-alt">Alt</label><br />
-        <input type="radio" name="layerForm" id="radio-energy" value="Energy">
-        <label for="radio-energy">Energy</label><br />
-        <input type="radio" name="layerForm" id="radio-inundation" value="Inundation">
-        <label for="radio-inundation">Inundation</label><br />
-        <input type="radio" name="layerForm" id="radio-density" value="Density">
-        <label for="radio-density">Density</label><br />
-        <input type="radio" name="layerForm" id="radio-depth" value="Depth">
-        <label for="radio-depth">Depth</label><br />
+
         
       </div>
     </div>
-
+    <div class="layer-btn-container">
+      <button class="layer-button" id="base-btn" style="background-color: red;">
+        Map
+        <div class="layer-radio" id="base-selector">
+          
+          <input type="radio" name="layerForm" id="radio-sat" value="Satellite" checked>
+          <label for="radio-sat">Satellite</label><br />
+          
+          <input type="radio" name="layerForm" id="radio-terrain" value="Terrain">
+          <label for="radio-terrain">Terrain</label><br />
+          
+          <input type="radio" name="layerForm" id="radio-OSM" value="OSM">
+          <label for="radio-OSM">OSM</label><br />
+          
+        </button>
+        <br/>
+        <button class="layer-button" id="result-btn" style="visibility: hidden ">
+          Results
+          <div class="layer-radio" id="result-selector">
+            <input type="radio" name="layerForm" id="radio-speed" value="Speed">
+            <label for="radio-speed">Speed</label><br />
+            <input type="radio" name="layerForm" id="radio-alt" value="Alt">
+            <label for="radio-alt">Alt</label><br />
+            <input type="radio" name="layerForm" id="radio-energy" value="Energy">
+            <label for="radio-energy">Energy</label><br />
+            <input type="radio" name="layerForm" id="radio-inundation" value="Inundation">
+            <label for="radio-inundation">Inundation</label><br />
+            <input type="radio" name="layerForm" id="radio-density" value="Density">
+            <label for="radio-density">Density</label><br />
+            <input type="radio" name="layerForm" id="radio-depth" value="Depth">
+            <label for="radio-depth">Depth</label><br />
+          </button>
+      </div>
   </body>
 </html>
