@@ -1,101 +1,64 @@
 @import "node_modules/ol/ol.css";
 @import "node_modules/ol-layerswitcher/dist/ol-layerswitcher.css";
 
-.banner {
-  display: flex;
-  justify-content: space-between;
-  align-items: left;
-  background-color: #f2f2f2;
-  padding: 10px;
-  position: absolute;
-  top: 0;
-  width: 100%;
-}
-.banner h1 {
-  margin: 0;
-  text-justify: center;
-}
-.banner button {
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-body {
-  font-family: 'Fira Code', monospace;
-}
-
-#left-panel {
-  float: left;
-  width: 25%;
-  height: 100%;
-  text-align: center;
-}
-#right-panel {
-  float: right;
-  width: 75%;
-  height: 100%;
-}
-.sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 20%;
-  padding: 20px;
-  background-color: #eeeeee;
-}
-
 html, body {
   margin: 0;
   height: 100%;
 }
 
-/* Style the dropdown button */
-.dropbtn {
-  background-color: #ccc;
-  color: black;
-  padding: 10px 20px;
-  font-size: 16px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+body {
+  font-family: 'Fira Code', monospace;
 }
 
-/* Style the dropdown content */
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f1f1f1;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+.overlay {
+  align-items: center;
+  display: flex; /* Add this to center the content horizontally */
+  justify-content: center; /* Add this to center the content horizontally */
+  height: 100%; /* Change this to 100% to cover the entire viewport vertically */
+  min-width: 33%; 
+  position: fixed;
   z-index: 1;
+  left: 0%;
+  right: auto;
+  top: 100%;
+  background-color: rgb(0,0,0);
+  background-color: rgba(256,256,256, 0.75);
+  overflow-x: hidden;
+  transition: 0.5s;
 }
 
-/* Style the options inside the dropdown */
-.dropdown-content button {
-  color: black;
-  padding: 10px 20px;
-  text-decoration: none;
-  display: block;
+/* Position the close button (top right corner) */
+.overlay .closebtn {
+  font-size: 36px;
+  color: #818181;
+  position: absolute;
+  top: 20px;
+  right: 45px;
+  font-size: 60px;
 }
 
-/* Style the options inside the dropdown on hover */
-.dropdown-content button:hover {
-  background-color: #ddd;
-}
+/* When the height of the screen is less than 450 pixels, change the font-size of the links and position the close button again, so they don't overlap */
+@media screen and (max-height: 450px) {
+  .overlay a {font-size: 20px}
+  .overlay .closebtn {
+    font-size: 40px;
+    top: 15px;
+    right: 35px;
+  }
+} 
 
-/* Style the active option */
-.dropdown-content button.active {
-  background-color: #4CAF50;
-  color: white;
-}
 
-/* Show the dropdown content when the dropdown button is clicked */
-.show {
-  display: block;
+#map-panel {
+  float: right;
+  width: 100%;
+  height: 100%;
+}
+#map {
+  position: fixed;
+  left: 0%;
+  top: 10%; 
+  bottom: 0;
+  width: 100%;
 }
 
 .layer-div{
@@ -104,15 +67,59 @@ html, body {
   margin-left: 10%;
 }
 
-#map {
-  position: fixed;
-  left: 25%;
-  top: 0; 
-  bottom: 0;
-  width: 75%;
-}
 /* Limit the width of the layer-switcher */
 .layer-switcher {
-  max-width: 300px;
+  max-width: 500px;
   text-align: left;
+}
+
+/* Custom styles for the input group text (prepend) */
+.input-group .input-group-text {
+  background-color: #f0f0f0;
+  color: #333;
+  border-color: #ccc;
+}
+
+/* Custom styles for the input field */
+.input-group .form-control {
+  border-color: #ccc;
+  text-align: right;
+}
+
+/* Custom styles for the input field when it gains focus */
+.input-group .form-control:focus {
+  border-color: #80bdff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+
+/* Style the navigation bar */
+  .navbar {
+    position: fixed;
+    width: 100%;
+    background-color: #333;
+    overflow: hidden;
+}
+
+/* Style the buttons inside the navigation bar */
+.navbar a {
+    float: left;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    height: 5%;
+}
+
+/* Change the color of the buttons on hover */
+.navbar a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+.simForm {
+  align-items: center;
+  width: 80%;
+  margin: auto;
 }

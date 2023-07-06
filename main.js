@@ -10,9 +10,29 @@ import LayerGroup from 'ol/layer/Group';
 import LayerSwitcher from 'ol-layerswitcher';
 import XYZ from 'ol/source/XYZ';
 
-//## Backend URL
-// const FLASK_URL = "http://18.134.191.205:5000/sim"
-const FLASK_URL = "http://localhost:5000/sim"
+
+//## Display control
+const simSettingsPanelBtn = document.getElementById('sim-setting-panel-btn');
+const simSettingsPanelClose = document.getElementById('sim-settings-panel-close');
+const simSettingsPanel = document.getElementById('sim-settings-panel');
+
+simSettingsPanelBtn.addEventListener('click', () => {
+  simSettingsPanel.style.top ="0%"
+});
+simSettingsPanelClose.addEventListener('click',() => simSettingsPanel.style.top = "100%")
+
+const aboutPanelBtn = document.getElementById('about-panel-btn');
+const aboutPanelClose = document.getElementById('about-panel-close');
+const aboutPanel = document.getElementById('about-panel');
+
+aboutPanelBtn.addEventListener('click', () => {
+  aboutPanel.style.top ="0%"
+});
+aboutPanelClose.addEventListener('click',() => aboutPanel.style.top = "100%")
+
+// ## Backend URL
+const FLASK_URL = "http://18.134.191.205:5000/sim"
+// const FLASK_URL = "http://localhost:5000/sim"
 
 //## HTML elements
 const fileInput = document.getElementById('file-input');
@@ -36,6 +56,9 @@ const tailingsVolume_input = document.getElementById("tailingsVolume-input");
 const tailingsDensity_input = document.getElementById("tailingsDensity-input");
 const maxTime_input = document.getElementById("maxTime-input");
 const timeStep_input = document.getElementById("timeStep-input");
+
+
+
 
 
 var minLon = 0;

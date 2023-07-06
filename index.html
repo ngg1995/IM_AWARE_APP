@@ -8,18 +8,26 @@
     <title>IM AWARE</title>
   </head>
   <body>
-    <div id="left-panel">
-      <h1></h1>
-      <img src="logo.png" width=90% margin-left="auto" margin-right="auto">
-      <h1></h1>
-      <h2>Dam break simulations</h2>
-
-      <button class="btn btn-primary" id="load">Load Simulation</button>
+    <div class="navbar">
+      
+      <h2 style="color: white;">Dam break simulations</h2>
+      <a href="#" id="about-panel-btn">About</a>
+      <a href="#" id="sim-setting-panel-btn">Simulation Settings</a>
+      <a href= "" id="load">Load Simulation</a>
       <input type="file" id="file-input" style="display:none;">
-      <button class="btn btn-primary" id="save" disabled>Save Simulation</button>
-      <h1></h1>
-      <form id="simForm" method="post" style="width: 80%; margin: 0 auto;">
+      <a href= "" id="save" disabled>Save Simulation</a>
+      <a href="mailto:ngg@liverpool.ac.uk,ferson@liverpool.ac.uk">Contact</a>
+    </div>
+    
+    <div id="map-panel">
+      <div id="map"></div>
+      <script type="module" src="./main.js"></script>
+    </div>
 
+    <div id="sim-settings-panel" class="overlay">
+      <a class="closebtn" id="sim-settings-panel-close">&times;</a>
+      <form id="simForm" method="post" class="simForm">
+        <h1>Simulation Parameters</h1>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text">Longitude</span>
@@ -95,9 +103,20 @@
         <button type="submit" class="btn btn-primary" id="sim-button">
           Simulate
         </button>
-</form>
+      </form>
 
-      <br/>
+
+    </div>
+
+    <div id="about-panel" class="overlay">
+      <a class="closebtn" id="about-panel-close">&times;</a>
+      <h1></h1>
+      <img src="logo.png" margin-left="auto" margin-right="auto">
+      <h1></h1>
+      <h2>Dam break simulations</h2>
+    </div>
+    
+    <div id="layer-panel">
       <div id="layers" class="layer-div">
         <input type="radio" name="layerForm" id="radio-speed" value="Speed">
         <label for="radio-speed">Speed</label><br />
@@ -113,13 +132,7 @@
         <label for="radio-depth">Depth</label><br />
         
       </div>
-
     </div>
 
-    <div id="right-panel">
-      <div id="map"></div>
-      <script type="module" src="./main.js"></script>
-    </div>
-    
   </body>
 </html>
