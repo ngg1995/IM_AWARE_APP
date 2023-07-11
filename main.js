@@ -41,8 +41,8 @@ resultBtn.addEventListener('mouseover', () => {resultSelector.style.display = 'b
 resultBtn.addEventListener('mouseout', () => {resultSelector.style.display = 'none'})
 
 // ## Backend URL
-const FLASK_URL = "http://18.134.191.205:5000/sim"
-// const FLASK_URL = "http://127.0.0.1:5000/sim"
+// const FLASK_URL = "http://18.134.191.205:5000/sim"
+const FLASK_URL = "http://127.0.0.1:5000/sim"
 
 //## HTML elements
 const fileInput = document.getElementById('file-input');
@@ -56,7 +56,7 @@ const radio_energy = document.getElementById("radio-energy");
 const radio_inundation = document.getElementById("radio-inundation");
 const radio_density = document.getElementById("radio-density");
 const radio_depth = document.getElementById("radio-depth");
-// const radio_clear = document.getElementById("radio-clear");
+const radio_clear = document.getElementById("radio-clear");
 const layers_div = document.getElementById("layers");
 const lon_input = document.getElementById("lon-input");
 const lat_input = document.getElementById("lat-input");
@@ -245,9 +245,9 @@ radio_density.addEventListener("click", event =>{
 radio_depth.addEventListener("click", event =>{
   selectSimLayer('depth');
 });
-// radio_clear.addEventListener("click", event =>{
-//   selectSimLayer('clear');
-// });
+radio_clear.addEventListener("click", event =>{
+  selectSimLayer('clear');
+});
 
 function runSimulation() {
   
