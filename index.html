@@ -12,7 +12,7 @@
       
       <h2 style="color: white;">Dam break simulations</h2>
       <a href="#" id="about-panel-btn">About</a>
-      <a href="#" id="sim-setting-panel-btn">Simulation Settings</a>
+      <a href="#" id="sim-setting-panel-btn">Simulation</a>
       <a href= "" id="load">Load Simulation</a>
       <input type="file" id="file-input" style="display:none;">
       <a href= "" id="save" disabled>Save Simulation</a>
@@ -23,11 +23,13 @@
       <div id="map"></div>
       <script type="module" src="./main.js"></script>
     </div>
+    
+    <div id="marker"><h1 >🔻</h1></div>
 
     <div id="sim-settings-panel" class="overlay">
       <a class="closebtn" id="sim-settings-panel-close">&times;</a>
       <form id="simForm" method="post" class="simForm">
-        <h1>Simulation Parameters</h1>
+        <h1>Simulation</h1>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text">Longitude</span>
@@ -111,15 +113,13 @@
     <div id="about-panel" class="overlay">
       <a class="closebtn" id="about-panel-close">&times;</a>
       <h1></h1>
-      <img src="logo.png" margin-left="auto" margin-right="auto">
-      <h1></h1>
+      <img src="logo.png" style="display: block; margin: 0 auto;">
+      <hr />
       <h2>Dam break simulations</h2>
+      <hr />
+      <p>The simulation tab contains the parameters used for the simulation. The location of the dam (shown with the red marker) can be selected either by entering the logitude and latitude coordinates or by double clicking on the map.</p>
     </div>
     
-    <div id="layer-panel">
-
-        
-      </div>
     </div>
     <div class="layer-btn-container">
       <button class="layer-button" id="base-btn" style="background-color: red;">
@@ -152,6 +152,9 @@
             <label for="radio-density">Density</label><br />
             <input type="radio" name="layerForm" id="radio-depth" value="Depth">
             <label for="radio-depth">Depth</label><br />
+            <!-- <input type="radio" name="layerForm" id="radio-depth" value="Clear">
+            <label for="radio-clear">Clear</label><br /> -->
+            
           </button>
       </div>
   </body>

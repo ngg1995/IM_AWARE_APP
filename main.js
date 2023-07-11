@@ -1,11 +1,11 @@
 import './style.css';
-import {Map, View} from 'ol';
+import {Map, Overlay, View} from 'ol';
 import TileLayer from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
 import Stamen from 'ol/source/Stamen';
 import ImageLayer from 'ol/layer/Image';
 import Static from 'ol/source/ImageStatic';
-import {toLonLat, transform} from 'ol/proj';
+import {fromLonLat, toLonLat, transform} from 'ol/proj';
 import LayerGroup from 'ol/layer/Group';
 import LayerSwitcher from 'ol-layerswitcher';
 import XYZ from 'ol/source/XYZ';
@@ -17,7 +17,7 @@ const simSettingsPanelClose = document.getElementById('sim-settings-panel-close'
 const simSettingsPanel = document.getElementById('sim-settings-panel');
 
 simSettingsPanelBtn.addEventListener('click', () => {
-  simSettingsPanel.style.top ="0%"
+  simSettingsPanel.style.top ="75px"
 });
 simSettingsPanelClose.addEventListener('click',() => simSettingsPanel.style.top = "100%")
 
@@ -26,7 +26,7 @@ const aboutPanelClose = document.getElementById('about-panel-close');
 const aboutPanel = document.getElementById('about-panel');
 
 aboutPanelBtn.addEventListener('click', () => {
-  aboutPanel.style.top ="0%"
+  aboutPanel.style.top ="75px"
 });
 aboutPanelClose.addEventListener('click',() => aboutPanel.style.top = "100%")
 
@@ -41,8 +41,8 @@ resultBtn.addEventListener('mouseover', () => {resultSelector.style.display = 'b
 resultBtn.addEventListener('mouseout', () => {resultSelector.style.display = 'none'})
 
 // ## Backend URL
-const FLASK_URL = "http://18.134.191.205:5000/sim"
-// const FLASK_URL = "http://localhost:5000/sim"
+// const FLASK_URL = "http://18.134.191.205:5000/sim"
+const FLASK_URL = "http://127.0.0.1:5000/sim"
 
 //## HTML elements
 const fileInput = document.getElementById('file-input');
@@ -56,6 +56,7 @@ const radio_energy = document.getElementById("radio-energy");
 const radio_inundation = document.getElementById("radio-inundation");
 const radio_density = document.getElementById("radio-density");
 const radio_depth = document.getElementById("radio-depth");
+// const radio_clear = document.getElementById("radio-clear");
 const layers_div = document.getElementById("layers");
 const lon_input = document.getElementById("lon-input");
 const lat_input = document.getElementById("lat-input");
@@ -111,16 +112,25 @@ var map = new Map({
     }),
   ],
   view: new View({
-    center: transform([-44.119589277222296, -20.133112801], 'EPSG:4326', 'EPSG:3857'),
-    zoom: 4.5
+    center: transform([lon_input.value,lat_input.value], 'EPSG:4326', 'EPSG:3857'),
+    zoom: 11.5
   })
 });
+
+var marker = new Overlay({
+  position: fromLonLat([lon_input.value,lat_input.value]),
+  positioning: 'center-center',
+  element: document.getElementById('marker'),
+  stopEvent: false
+});
+map.addOverlay(marker);
 
 map.on('dblclick', function(evt){
   
   var coords = toLonLat(evt.coordinate);
   lat_input.value = coords[1];
   lon_input.value = coords[0];
+  marker.setPosition(evt.coordinate);
   // var locTxt = "Latitude: " + lat + " Longitude: " + lon;
   // coords is a div in HTML below the map to display
 });
@@ -130,22 +140,28 @@ function getExtent(minX, maxX, minY, maxY) {
     transform([minX, minY], 'EPSG:4326', 'EPSG:3857'),
     transform([maxX, maxY], 'EPSG:4326', 'EPSG:3857')
   ];
-  console.log(extent)
+
   return [extent[0][0], extent[0][1], extent[1][0], extent[1][1]];
 }
 
-
+function moveMarker(longitude,latitude) {
+  marker.setPosition(transform([longitude, latitude], 'EPSG:4326','EPSG:3857'));
+}
 function setMapViewToCoords(longitude, latitude) {
   const view = map.getView();
   view.setCenter(transform([longitude, latitude], 'EPSG:4326','EPSG:3857'));
 }
 
 lon_input.addEventListener("change", event => {
-  setMapViewToCoords(lon_input.value, lat_input.value)
+  setMapViewToCoords(lon_input.value, lat_input.value);
+  moveMarker(lon_input.value, lat_input.value)
+  
 })
 lat_input.addEventListener("change", event => {
-  setMapViewToCoords(lon_input.value, lat_input.value)
+  setMapViewToCoords(lon_input.value, lat_input.value);
+  moveMarker(lon_input.value, lat_input.value)
 })
+
 
 //## 
 function addLayerToMap(minLon, maxLon, minLat, maxLat, mask,layername) {
@@ -181,7 +197,6 @@ function selectBaseLayer(id) {
       } else{
         layers[i].setVisible(false);
       }
-      // console.log(layers[i].getProperties().name)
     }
   }   
 }
@@ -208,7 +223,6 @@ function selectSimLayer(id) {
       } else{
         layers[i].setVisible(false);
       }
-      // console.log(layers[i].getProperties().name)
     }
   }   
 }
@@ -231,7 +245,9 @@ radio_density.addEventListener("click", event =>{
 radio_depth.addEventListener("click", event =>{
   selectSimLayer('depth');
 });
-
+// radio_clear.addEventListener("click", event =>{
+//   selectSimLayer('clear');
+// });
 
 function runSimulation() {
   
@@ -266,15 +282,14 @@ function runSimulation() {
       var layers = map.getLayers().getArray();
       for (var i = layers.length - 1; i >= 0; --i) {
         if (layers[i] instanceof ImageLayer) {
-          console.log(i)
           map.removeLayer(layers[i]);
         }
       }        
-      
       minLon = result.minLon;
       maxLon = result.maxLon;
       minLat = result.minLat;
       maxLat = result.maxLat;
+      console.log(minLon,maxLon,minLat,maxLat)
 
       addLayerToMap(minLon, maxLon, minLat, maxLat, "data:image/png;base64," + result.speed,"speed");
       addLayerToMap(minLon, maxLon, minLat, maxLat, "data:image/png;base64," + result.alt,"alt");
@@ -376,7 +391,7 @@ fileInput.addEventListener('change', function() {
     tailingsDensity_input.value = json.tailingsDensity;
     maxTime_input.value = json.maxTime;
     timeStep_input.value = json.timeStep;
-    console.log(minLon, maxLon, minLat, maxLat)
+
     addLayerToMap(minLon, maxLon, minLat, maxLat, json.speed,"speed");
     addLayerToMap(minLon, maxLon, minLat, maxLat, json.alt,"alt");
     addLayerToMap(minLon, maxLon, minLat, maxLat, json.energy,"energy");
