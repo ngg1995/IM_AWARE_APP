@@ -41,8 +41,8 @@ resultBtn.addEventListener('mouseover', () => {resultSelector.style.display = 'b
 resultBtn.addEventListener('mouseout', () => {resultSelector.style.display = 'none'})
 
 // ## Backend URL
-// const FLASK_URL = "http://18.134.191.205:5000/sim"
-const FLASK_URL = "http://127.0.0.1:5000/sim"
+const FLASK_URL = "http://18.134.191.205:5000/sim"
+// const FLASK_URL = "http://127.0.0.1:5000/sim"
 
 //## HTML elements
 const fileInput = document.getElementById('file-input');
