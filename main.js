@@ -1,6 +1,6 @@
 // ## Backend URL
-// const FLASK_URL = "http://18.134.191.205:5000/sim"
-const FLASK_URL = "http://127.0.0.1:3000/sim"
+const FLASK_URL = "http://18.134.191.205:5000/sim"
+// const FLASK_URL = "http://127.0.0.1:3000/sim"
 
 import './style.css';
 import {Map, Overlay, View} from 'ol';
