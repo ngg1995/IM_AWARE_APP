@@ -24,12 +24,19 @@ body {
   z-index: 0;
 }
 
+.content {
+  display: block;
+  margin: 0 auto;
+  text-align: center; /* Optional: center-align content */
+}
+
+
 .overlay {
   align-items: center;
   display: flex; /* Add this to center the content horizontally */
   justify-content: center; /* Add this to center the content horizontally */
   height: 100%; /* Change this to 100% to cover the entire viewport vertically */
-  min-width: 33%; 
+  width: 33%; 
   position: fixed;
   z-index: 1;
   left: 0%;
@@ -120,15 +127,13 @@ body {
 
 .layer-btn-container{
   position: fixed;
-  top: 7.5%;
-  right: 5%;
   margin-right: 0px;
   margin-left: auto;
-  width: 15ex;
+  min-width: 15ex;
 }
 
 .layer-button {
-  width: 20ex;
+  min-width: 20ex;
   position: relative;
   background-color: #4CAF50;
   opacity: 90%;

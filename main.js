@@ -1,3 +1,7 @@
+// ## Backend URL
+// const FLASK_URL = "http://18.134.191.205:5000/sim"
+const FLASK_URL = "http://127.0.0.1:3000/sim"
+
 import './style.css';
 import {Map, Overlay, View} from 'ol';
 import TileLayer from 'ol/layer/Tile';
@@ -11,75 +15,94 @@ import LayerSwitcher from 'ol-layerswitcher';
 import XYZ from 'ol/source/XYZ';
 
 
-//## Display control
+//## HTML elements
 const simSettingsPanelBtn = document.getElementById('sim-setting-panel-btn');
 const simSettingsPanelClose = document.getElementById('sim-settings-panel-close');
 const simSettingsPanel = document.getElementById('sim-settings-panel');
-
-simSettingsPanelBtn.addEventListener('click', () => {
-  simSettingsPanel.style.top ="75px"
-});
-simSettingsPanelClose.addEventListener('click',() => simSettingsPanel.style.top = "100%")
-
+const tailingsDensityDiv = document.getElementById('tailingsDensityDiv')
+const dampingFactorDiv = document.getElementById('dampingFactorDiv')
 const aboutPanelBtn = document.getElementById('about-panel-btn');
 const aboutPanelClose = document.getElementById('about-panel-close');
 const aboutPanel = document.getElementById('about-panel');
-
-aboutPanelBtn.addEventListener('click', () => {
-  aboutPanel.style.top ="75px"
-});
-aboutPanelClose.addEventListener('click',() => aboutPanel.style.top = "100%")
-
 const baseBtn = document.getElementById('base-btn')
 const baseSelector = document.getElementById('base-selector')
-baseBtn.addEventListener('mouseover', () => {baseSelector.style.display = 'block'})
-baseBtn.addEventListener('mouseout', () => {baseSelector.style.display = 'none'})
-
 const resultBtn = document.getElementById('result-btn')
 const resultSelector = document.getElementById('result-selector')
-resultBtn.addEventListener('mouseover', () => {resultSelector.style.display = 'block'})
-resultBtn.addEventListener('mouseout', () => {resultSelector.style.display = 'none'})
-
-// ## Backend URL
-const FLASK_URL = "http://18.134.191.205:5000/sim"
-// const FLASK_URL = "http://127.0.0.1:5000/sim"
-
-//## HTML elements
 const fileInput = document.getElementById('file-input');
 const save_button = document.getElementById("save");
 const load_button = document.getElementById("load");
 const simForm = document.getElementById("simForm");
 const sim_btn = document.getElementById("sim-button");
 const radio_speed = document.getElementById("radio-speed");
-const radio_alt = document.getElementById("radio-alt");
 const radio_energy = document.getElementById("radio-energy");
-const radio_inundation = document.getElementById("radio-inundation");
-const radio_density = document.getElementById("radio-density");
 const radio_depth = document.getElementById("radio-depth");
 const radio_clear = document.getElementById("radio-clear");
-const layers_div = document.getElementById("layers");
+
 const lon_input = document.getElementById("lon-input");
 const lat_input = document.getElementById("lat-input");
 const nObj_input = document.getElementById("nObj-input");
 const pondRadius_input = document.getElementById("pondRadius-input");
 const tailingsVolume_input = document.getElementById("tailingsVolume-input");
+const oreType_select = document.getElementById('oreType-select');
+const dampingFactor_input = document.getElementById('dampingFactor-input')
 const tailingsDensity_input = document.getElementById("tailingsDensity-input");
 const maxTime_input = document.getElementById("maxTime-input");
 const timeStep_input = document.getElementById("timeStep-input");
-
 const radio_sat = document.getElementById('radio-sat');
 const radio_terrain = document.getElementById('radio-terrain');
 const radio_OSM = document.getElementById('radio-OSM');
+const colorbar_select_button = document.getElementById('colorbar-select-button');
+const colorbar_select_div = document.getElementById('colorbar-select-div');
+const colorbar_select = document.getElementById('colorbar-select');
+const scale_speed_min = document.getElementById('scale-speed-min')
+const scale_energy_min = document.getElementById('scale-energy-min')
+const scale_depth_min = document.getElementById('scale-depth-min')
+const scale_speed_max = document.getElementById('scale-speed-max')
+const scale_energy_max = document.getElementById('scale-energy-max')
+const scale_depth_max = document.getElementById('scale-depth-max')
+
+//## Display control
+simSettingsPanelBtn.addEventListener('click', () => {
+  simSettingsPanel.style.top ="75px"
+  aboutPanel.style.top = "100%"
+});
+simSettingsPanelClose.addEventListener('click',() => simSettingsPanel.style.top = "100%")
 
 
+aboutPanelBtn.addEventListener('click', () => {
+  aboutPanel.style.top ="75px"
+  simSettingsPanel.style.top = "100%"
+});
+aboutPanelClose.addEventListener('click',() => aboutPanel.style.top = "100%")
 
+baseBtn.addEventListener('mouseover', () => {baseSelector.style.display = 'block'})
+baseBtn.addEventListener('mouseout', () => {baseSelector.style.display = 'none'})
 
+resultBtn.addEventListener('mouseover', () => {resultSelector.style.display = 'block'})
+resultBtn.addEventListener('mouseout', () => {resultSelector.style.display = 'none'})
+
+oreType_select.addEventListener("change", () => {
+
+  if (oreType_select.value === 'custom') {
+    tailingsDensityDiv.style.visibility = 'visible';
+    dampingFactorDiv.style.visibility = 'visible';
+  } else if (oreType_select.value === 'default'){
+    tailingsDensityDiv.style.visibility = 'hidden';
+    dampingFactorDiv.style.visibility = 'hidden';
+    tailingsDensityDiv.value = 1594;
+    dampingFactorDiv.value = 0.04;
+  }
+})
+
+colorbar_select.addEventListener('change', () => {
+  colorbar_img.src = 'colorbars/' + colorbar_select.value + '.png';
+})
+
+//## Map elements
 var minLon = 0;
 var maxLon = 0;
 var minLat = 0;
 var maxLat = 0;
-
-//## Map elements
 var map = new Map({
   target: 'map',
   layers: [
@@ -224,23 +247,31 @@ function selectSimLayer(id) {
         layers[i].setVisible(false);
       }
     }
-  }   
+  }
+  scale_speed_min.style.display = 'none';
+  scale_speed_max.style.display = 'none';
+  scale_energy_min.style.display = 'none';
+  scale_energy_max.style.display = 'none';
+  scale_depth_min.style.display = 'none';
+  scale_depth_max.style.display = 'none';
+
+  if (id === 'speed') {
+    scale_speed_min.style.display = 'inline';
+    scale_speed_max.style.display = 'inline';
+  } else if (id === 'energy') {
+    scale_energy_min.style.display = 'inline';
+    scale_energy_max.style.display = 'inline';
+  } else if (id === 'depth') {
+    scale_depth_min.style.display = 'inline';
+    scale_depth_max.style.display = 'inline';
+  }
 }
 
 radio_speed.addEventListener("click", event =>{
   selectSimLayer('speed');
 });
-radio_alt.addEventListener("click", event =>{
-  selectSimLayer('alt');
-});
 radio_energy.addEventListener("click", event =>{
   selectSimLayer('energy');
-});
-radio_inundation.addEventListener("click", event =>{
-  selectSimLayer('inundation');
-});
-radio_density.addEventListener("click", event =>{
-  selectSimLayer('density');
 });
 radio_depth.addEventListener("click", event =>{
   selectSimLayer('depth');
@@ -261,8 +292,10 @@ function runSimulation() {
     pondRadius: pondRadius_input.value,
     tailingsVolume: tailingsVolume_input.value,
     tailingsDensity: tailingsDensity_input.value,
+    dampingFactor: dampingFactor_input.value,
     maxTime: maxTime_input.value,
-    timeStep: timeStep_input.value
+    timeStep: timeStep_input.value,
+    cbar: colorbar_select.value
   };
   
   fetch(FLASK_URL, {
@@ -278,7 +311,7 @@ function runSimulation() {
     if (result.status === 1) {
       alert("Unable to process inputs")
     } else {
-      
+
       var layers = map.getLayers().getArray();
       for (var i = layers.length - 1; i >= 0; --i) {
         if (layers[i] instanceof ImageLayer) {
@@ -289,15 +322,20 @@ function runSimulation() {
       maxLon = result.maxLon;
       minLat = result.minLat;
       maxLat = result.maxLat;
-      console.log(minLon,maxLon,minLat,maxLat)
 
-      addLayerToMap(minLon, maxLon, minLat, maxLat, "data:image/png;base64," + result.speed,"speed");
-      addLayerToMap(minLon, maxLon, minLat, maxLat, "data:image/png;base64," + result.alt,"alt");
-      addLayerToMap(minLon, maxLon, minLat, maxLat, "data:image/png;base64," + result.energy,"energy");
-      addLayerToMap(minLon, maxLon, minLat, maxLat, "data:image/png;base64," + result.inundation,"inundation");
-      addLayerToMap(minLon, maxLon, minLat, maxLat, "data:image/png;base64," + result.density,"density");
-      addLayerToMap(minLon, maxLon, minLat, maxLat, "data:image/png;base64," + result.depth,"depth");
+
+      addLayerToMap(minLon, maxLon, minLat, maxLat, "data:image/png;base64," + result.speed.img,"speed");
+      addLayerToMap(minLon, maxLon, minLat, maxLat, "data:image/png;base64," + result.energy.img,"energy");
+      addLayerToMap(minLon, maxLon, minLat, maxLat, "data:image/png;base64," + result.depth.img,"depth");
       
+      scale_speed_min.textContent = result.speed.mn
+      scale_energy_min.textContent = result.energy.mn
+      scale_depth_min.textContent = result.depth.mn
+
+      scale_speed_max.textContent = result.speed.mx + " m/s"
+      scale_energy_max.textContent = result.energy.mx + " J"
+      scale_depth_max.textContent = result.depth.mx + " m"
+      colorbar_img.src = 'colorbars/' + colorbar_select.value + '.png'
       resultBtn.style.visibility="visible";
       radio_speed.checked = true;
       selectSimLayer('speed');
@@ -308,8 +346,7 @@ function runSimulation() {
     save_button.disabled = false;
     })
     .catch(error => {
-      // console.error(error);
-      // alert("Simulation failed to run")
+
       alert(error)
 
       sim_btn.innerHTML = 'Simulate'
@@ -337,8 +374,16 @@ save_button.addEventListener("click", event => {
     pondRadius: pondRadius_input.value,
     tailingsVolume: tailingsVolume_input.value,
     tailingsDensity: tailingsDensity_input.value,
+    dampingFactor: dampingFactor_input.value,
     maxTime: maxTime_input.value,
     timeStep: timeStep_input.value,
+    scale_speed_min: scale_speed_min.textContent,
+    scale_energy_min: scale_energy_min.textContent,
+    scale_depth_min: scale_depth_min.textContent,
+    scale_speed_max: scale_speed_max.textContent,
+    scale_energy_max: scale_energy_max.textContent,
+    scale_depth_max: scale_depth_max.textContent,
+    colorbar: colorbar_select.value,
     minLon: minLon,
     maxLon: maxLon,
     minLat: minLat,
@@ -389,19 +434,25 @@ fileInput.addEventListener('change', function() {
     pondRadius_input.value = json.pondRadius;
     tailingsVolume_input.value = json.tailingsVolume;
     tailingsDensity_input.value = json.tailingsDensity;
+    dampingFactor_input.value = json.dampingFactor_input;
     maxTime_input.value = json.maxTime;
     timeStep_input.value = json.timeStep;
 
+    scale_speed_min.textContent = json.scale_speed_min
+    scale_energy_min.textContent = json.scale_energy_min
+    scale_depth_min.textContent = json.scale_depth_min
+    scale_speed_max.textContent = json.scale_speed_max
+    scale_energy_max.textContent = json.scale_energy_max
+    scale_depth_max.textContent = json.scale_depth_max
+    colorbar_select.value = json.colorbar
+
     addLayerToMap(minLon, maxLon, minLat, maxLat, json.speed,"speed");
-    addLayerToMap(minLon, maxLon, minLat, maxLat, json.alt,"alt");
     addLayerToMap(minLon, maxLon, minLat, maxLat, json.energy,"energy");
-    addLayerToMap(minLon, maxLon, minLat, maxLat, json.inundation,"inundation");
-    addLayerToMap(minLon, maxLon, minLat, maxLat, json.density,"density");
     addLayerToMap(minLon, maxLon, minLat, maxLat, json.depth,"depth");
 
     resultBtn.style.visibility="visible";
     radio_inundation.checked = true;
-    selectSimLayer('inundation');
+    selectSimLayer('speed');
 
   };
 
