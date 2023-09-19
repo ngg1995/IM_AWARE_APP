@@ -1,6 +1,6 @@
 // ## Backend URL
-const FLASK_URL = "http://18.134.191.205:5000/sim"
-// const FLASK_URL = "http://127.0.0.1:3000/sim"
+const FLASK_URL = "http://18.134.191.205:5000/"
+// const FLASK_URL = "http://127.0.0.1:5000/"
 
 import './style.css';
 import {Map, Overlay, View} from 'ol';
@@ -51,9 +51,9 @@ const timeStep_input = document.getElementById("timeStep-input");
 const radio_sat = document.getElementById('radio-sat');
 const radio_terrain = document.getElementById('radio-terrain');
 const radio_OSM = document.getElementById('radio-OSM');
-const colorbar_select_button = document.getElementById('colorbar-select-button');
-const colorbar_select_div = document.getElementById('colorbar-select-div');
-const colorbar_select = document.getElementById('colorbar-select');
+const colorscale = document.getElementById('colorscale')
+const colorscale_img = document.getElementById('colorscale-img')
+const colorscale_select = document.getElementById('colorscale-select');
 const scale_speed_min = document.getElementById('scale-speed-min')
 const scale_energy_min = document.getElementById('scale-energy-min')
 const scale_depth_min = document.getElementById('scale-depth-min')
@@ -92,10 +92,6 @@ oreType_select.addEventListener("change", () => {
     tailingsDensityDiv.value = 1594;
     dampingFactorDiv.value = 0.04;
   }
-})
-
-colorbar_select.addEventListener('change', () => {
-  colorbar_img.src = 'colorbars/' + colorbar_select.value + '.png';
 })
 
 //## Map elements
@@ -295,10 +291,10 @@ function runSimulation() {
     dampingFactor: dampingFactor_input.value,
     maxTime: maxTime_input.value,
     timeStep: timeStep_input.value,
-    cbar: colorbar_select.value
+    cbar: colorscale_select.value
   };
   
-  fetch(FLASK_URL, {
+  fetch(FLASK_URL + "sim", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -335,7 +331,7 @@ function runSimulation() {
       scale_speed_max.textContent = result.speed.mx + " m/s"
       scale_energy_max.textContent = result.energy.mx + " J"
       scale_depth_max.textContent = result.depth.mx + " m"
-      colorbar_img.src = 'colorbars/' + colorbar_select.value + '.png'
+      // colorscale_img.src = 'colorscales/' + colorscale_select.value + '.png'
       resultBtn.style.visibility="visible";
       radio_speed.checked = true;
       selectSimLayer('speed');
@@ -383,7 +379,7 @@ save_button.addEventListener("click", event => {
     scale_speed_max: scale_speed_max.textContent,
     scale_energy_max: scale_energy_max.textContent,
     scale_depth_max: scale_depth_max.textContent,
-    colorbar: colorbar_select.value,
+    colorscale: colorscale_select.value,
     minLon: minLon,
     maxLon: maxLon,
     minLat: minLat,
@@ -444,7 +440,7 @@ fileInput.addEventListener('change', function() {
     scale_speed_max.textContent = json.scale_speed_max
     scale_energy_max.textContent = json.scale_energy_max
     scale_depth_max.textContent = json.scale_depth_max
-    colorbar_select.value = json.colorbar
+    colorscale_select.value = json.colorscale
 
     addLayerToMap(minLon, maxLon, minLat, maxLat, json.speed,"speed");
     addLayerToMap(minLon, maxLon, minLat, maxLat, json.energy,"energy");
@@ -459,3 +455,25 @@ fileInput.addEventListener('change', function() {
   reader.readAsText(file);
 
 });
+
+
+// Function to create the heatmap with the specified colorscale
+function make_colorbar(color) {
+
+  fetch(FLASK_URL + "colorbar", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({'color':color})
+  })
+  .then(response => response.json())
+  .then(result => {
+    colorscale_img.src = "data:image/png;base64," + result.img;
+  })
+
+} 
+make_colorbar(colorscale_select.value)
+colorscale_select.addEventListener("change", () => {
+  make_colorbar(colorscale_select.value)
+})

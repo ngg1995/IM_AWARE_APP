@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <link rel="icon" type="image/x-icon" href="icon.png" />
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>IM AWARE</title>
   </head>
@@ -127,58 +128,101 @@
           <div class="input-group-prepend">
             <label class="input-group-text" for="colorbar-select">Simulation Colours</label>
           </div>
-          <select id="colorbar-select" name="colorbar" class="custom-select" style="text-align: right;" value="viridis">
-            <option value='viridis'>viridis</option> 
-            <option value='plasma'>plasma</option> 
-            <option value='inferno'>inferno</option> 
-            <option value='magma'>magma</option> 
+          <select id="colorscale-select" name="colorscale" class="custom-select" style="text-align: right;" value="viridis">
+            <option value='aggrnyl'>aggrnyl</option>
+            <option value='agsunset'>agsunset</option>
+            <option value='algae'>algae</option>
+            <option value='amp'>amp</option>
+            <option value='armyrose'>armyrose</option>
+            <option value='balance'>balance</option>
+            <option value='blackbody'>blackbody</option>
+            <option value='bluered'>bluered</option>
+            <option value='blues'>blues</option>
+            <option value='blugrn'>blugrn</option>
+            <option value='bluyl'>bluyl</option>
+            <option value='brbg'>brbg</option>
+            <option value='brwnyl'>brwnyl</option>
+            <option value='bugn'>bugn</option>
+            <option value='bupu'>bupu</option>
+            <option value='burg'>burg</option>
+            <option value='burgyl'>burgyl</option>
             <option value='cividis'>cividis</option>
-            <option value='Greys'>Greys</option> 
-            <option value='Purples'>Purples</option> 
-            <option value='Blues'>Blues</option> 
-            <option value='Greens'>Greens</option> 
-            <option value='Oranges'>Oranges</option> 
-            <option value='Reds'>Reds</option>
-            <option value='YlOrBr'>YlOrBr</option> 
-            <option value='YlOrRd'>YlOrRd</option> 
-            <option value='OrRd'>OrRd</option> 
-            <option value='PuRd'>PuRd</option> 
-            <option value='RdPu'>RdPu</option> 
-            <option value='BuPu'>BuPu</option>
-            <option value='GnBu'>GnBu</option> 
-            <option value='PuBu'>PuBu</option> 
-            <option value='YlGnBu'>YlGnBu</option> 
-            <option value='PuBuGn'>PuBuGn</option> 
-            <option value='BuGn'>BuGn</option> 
-            <option value='YlGn'>YlGn</option>
-            <option value='binary'>binary</option> 
-            <option value='gist_yarg'>gist_yarg</option> 
-            <option value='gist_gray'>gist_gray</option> 
-            <option value='gray'>gray</option> 
-            <option value='bone'>bone</option> 
-            <option value='pink'>pink</option>
-            <option value='spring'>spring</option> 
-            <option value='summer'>summer</option> 
-            <option value='autumn'>autumn</option> 
-            <option value='winter'>winter</option> 
-            <option value='cool'>cool</option> 
-            <option value='Wistia'>Wistia</option>
-            <option value='hot'>hot</option> 
-            <option value='afmhot'>afmhot</option> 
-            <option value='gist_heat'>gist_heat</option> 
-            <option value='copper'>copper</option>
-            <option value='PiYG'>PiYG</option> 
-            <option value='PRGn'>PRGn</option> 
-            <option value='BrBG'>BrBG</option> 
-            <option value='PuOr'>PuOr</option> 
-            <option value='RdGy'>RdGy</option> 
-            <option value='RdBu'>RdBu</option>
-            <option value='RdYlBu'>RdYlBu</option> 
-            <option value='RdYlGn'>RdYlGn</option> 
-            <option value='Spectral'>Spectral</option> 
-            <option value='coolwarm'>coolwarm</option> 
-            <option value='bwr'>bwr</option> 
-            <option value='seismic'>seismic</option>
+            <option value='curl'>curl</option>
+            <option value='darkmint'>darkmint</option>
+            <option value='deep'>deep</option>
+            <option value='delta'>delta</option>
+            <option value='dense'>dense</option>
+            <option value='earth'>earth</option>
+            <option value='edge'>edge</option>
+            <option value='electric'>electric</option>
+            <option value='emrld'>emrld</option>
+            <option value='fall'>fall</option>
+            <option value='geyser'>geyser</option>
+            <option value='gnbu'>gnbu</option>
+            <option value='gray'>gray</option>
+            <option value='greens'>greens</option>
+            <option value='greys'>greys</option>
+            <option value='haline'>haline</option>
+            <option value='hot'>hot</option>
+            <option value='hsv'>hsv</option>
+            <option value='ice'>ice</option>
+            <option value='icefire'>icefire</option>
+            <option value='inferno'>inferno</option>
+            <option value='jet'>jet</option>
+            <option value='magenta'>magenta</option>
+            <option value='magma'>magma</option>
+            <option value='matter'>matter</option>
+            <option value='mint'>mint</option>
+            <option value='mrybm'>mrybm</option>
+            <option value='mygbm'>mygbm</option>
+            <option value='oranges'>oranges</option>
+            <option value='orrd'>orrd</option>
+            <option value='oryel'>oryel</option>
+            <option value='oxy'>oxy</option>
+            <option value='peach'>peach</option>
+            <option value='phase'>phase</option>
+            <option value='picnic'>picnic</option>
+            <option value='pinkyl'>pinkyl</option>
+            <option value='piyg'>piyg</option>
+            <option value='plasma'>plasma</option>
+            <option value='plotly3'>plotly3</option>
+            <option value='portland'>portland</option>
+            <option value='prgn'>prgn</option>
+            <option value='pubu'>pubu</option>
+            <option value='pubugn'>pubugn</option>
+            <option value='puor'>puor</option>
+            <option value='purd'>purd</option>
+            <option value='purp'>purp</option>
+            <option value='purples'>purples</option>
+            <option value='purpor'>purpor</option>
+            <option value='rainbow'>rainbow</option>
+            <option value='rdbu'>rdbu</option>
+            <option value='rdgy'>rdgy</option>
+            <option value='rdpu'>rdpu</option>
+            <option value='rdylbu'>rdylbu</option>
+            <option value='rdylgn'>rdylgn</option>
+            <option value='redor'>redor</option>
+            <option value='reds'>reds</option>
+            <option value='solar'>solar</option>
+            <option value='spectral'>spectral</option>
+            <option value='speed'>speed</option>
+            <option value='sunset'>sunset</option>
+            <option value='sunsetdark'>sunsetdark</option>
+            <option value='teal'>teal</option>
+            <option value='tealgrn'>tealgrn</option>
+            <option value='tealrose'>tealrose</option>
+            <option value='tempo'>tempo</option>
+            <option value='temps'>temps</option>
+            <option value='thermal'>thermal</option>
+            <option value='tropic'>tropic</option>
+            <option value='turbid'>turbid</option>
+            <option value='turbo'>turbo</option>
+            <option value='twilight'>twilight</option>
+            <option value='viridis'>viridis</option>
+            <option value='ylgn'>ylgn</option>
+            <option value='ylgnbu'>ylgnbu</option>
+            <option value='ylorbr'>ylorbr</option>
+            <option value='ylorrd'>ylorrd</option>
           </select>
         </div>
       </form>
@@ -202,7 +246,7 @@
         <p id="scale-speed-min" style="display: none; color:black;"></p>
         <p id="scale-energy-min" style="display: none; color:black;"></p>
         <p id="scale-depth-min" style="display: none; color:black;"></p>
-        <img src="colorbars/viridis.png" id="colorbar_img" width="66%">
+        <img src="" id="colorscale-img" width="66%">
         <p id="scale-speed-max" style="display: none; color:black;"></p>
         <p id="scale-energy-max" style="display: none; color:black;"></p>
         <p id="scale-depth-max" style="display: none; color:black;"></p>
@@ -239,5 +283,6 @@
 
           </button>
       </div>
+      <div id="colorscale" style="display: none;"></div>
   </body>
 </html>
