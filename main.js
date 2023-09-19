@@ -325,13 +325,12 @@ function runSimulation() {
       addLayerToMap(minLon, maxLon, minLat, maxLat, "data:image/png;base64," + result.depth.img,"depth");
       
       scale_speed_min.textContent = result.speed.mn
-      scale_energy_min.textContent = result.energy.mn
+      scale_energy_min.textContent = (result.energy.mn/1e6).toFixed(3)
       scale_depth_min.textContent = result.depth.mn
 
       scale_speed_max.textContent = result.speed.mx + " m/s"
-      scale_energy_max.textContent = result.energy.mx + " J"
+      scale_energy_max.textContent = (result.energy.mx/1e6).toFixed(3) + " MJ"
       scale_depth_max.textContent = result.depth.mx + " m"
-      // colorscale_img.src = 'colorscales/' + colorscale_select.value + '.png'
       resultBtn.style.visibility="visible";
       radio_speed.checked = true;
       selectSimLayer('speed');
