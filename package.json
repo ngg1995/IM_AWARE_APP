@@ -1,5 +1,5 @@
 {
-  "name": "IM_AWARE_APP",
+  "name": "imaware",
   "version": "1.0.0",
   "description": "Dam break simulations",
   "main": "electron-entry.js",
