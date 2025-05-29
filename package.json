@@ -1,7 +1,7 @@
 {
-  "name": "my-app",
+  "name": "IM AWARE APP",
   "version": "1.0.0",
-  "description": "Hello World!",
+  "description": "Dam break simulations",
   "main": "electron-entry.js",
   "scripts": {
     "electron": "electron .",
